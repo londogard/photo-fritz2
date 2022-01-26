@@ -1,9 +1,11 @@
-![fritz2](https://www.fritz2.dev/images/fritz2_logo_grey.png)
+This is a integration of ONNX with Kotlin JS.
 
-# A getting-started-template for fritz2-apps.
+In this project a Deep Learning (originally PyTorch) model is running 
+directly inside the browser.
 
-[![video](https://img.youtube.com/vi/c-ybTQdF5xk/0.jpg)](https://www.youtube.com/watch?v=c-ybTQdF5xk)
+ONNX uses technologies such as WASM and WebGL to accelerate the inference.
 
-Please have a look at [fritz2's documentation](https://docs.fritz2.dev) or the [examples](https://www.fritz2.dev/examples.html) to learn, how to use it.
+The framework used is `fritz2`.
 
-If you have any problems with this template, please open an issue at [fritz2](https://github.com/jwstegemann/fritz2/issues).
+
+A fun project all in all!
