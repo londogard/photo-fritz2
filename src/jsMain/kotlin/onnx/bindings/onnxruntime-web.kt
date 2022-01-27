@@ -1,6 +1,8 @@
 @file:JsModule("onnxruntime-web")
 @file:JsNonModule
 
+package onnx.bindings
+
 import org.khronos.webgl.*
 import kotlin.js.Promise
 
