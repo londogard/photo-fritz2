@@ -10,13 +10,21 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLImageElement
 
 object TensorHelper {
-    fun imgToUInt8ClampedArray(img: HTMLImageElement, ctx: CanvasRenderingContext2D): Uint8ClampedArray {
-        val canvas = ctx.canvas
-        canvas.width = img.naturalWidth
-        canvas.height = img.naturalHeight
-        ctx.drawImage(img, 0.0, 0.0)
+    private const val maxSize: Float = 1280*720f
 
-        return ctx.getImageData(0.0, 0.0, img.naturalWidth.toDouble(), img.naturalHeight.toDouble()).data
+    fun rescaleToMaxSize(width: Int, height: Int): Pair<Int, Int> {
+        val scale = maxSize / (width * height)
+
+        return (scale * width).toInt().coerceAtMost(width) to (scale * height).toInt().coerceAtMost(height)
+    }
+
+    fun imgToUInt8ClampedArray(img: HTMLImageElement, ctx: CanvasRenderingContext2D, width: Int, height: Int): Uint8ClampedArray {
+        val canvas = ctx.canvas
+        canvas.width = width
+        canvas.height = height
+        ctx.drawImage(img, 0.0, 0.0, width.toDouble(), height.toDouble())
+
+        return ctx.getImageData(0.0, 0.0, width.toDouble(), height.toDouble()).data
     }
 
     fun float32ToUInt8Clamped(data: Float32Array): Uint8ClampedArray {
