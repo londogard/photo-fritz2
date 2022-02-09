@@ -20,7 +20,6 @@ import org.khronos.webgl.get
 import org.khronos.webgl.set
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.ImageData
-import kotlin.math.min
 import kotlin.time.ExperimentalTime
 
 object OnnxInferenceStore : RootStore<String>("") {
@@ -40,20 +39,26 @@ object OnnxInferenceStore : RootStore<String>("") {
                 val input = TensorHelper.tensorToInput(tensor)
 
                 val ir = ONNX.loadInferenceSession()
+                // println("Loaded")
                 val out = ir.run(input).await()
 
                 val outTensor = out["output"] as Tensor
+                // js("outTensor *= 255.0")
                 val outData = outTensor.data as Float32Array
+                // println("Float32")
 
                 for (i in 0 until outData.length) {
-                    outData[i] = min(outData[i], 1f) * 255f
+                    outData[i] = if (outData[i] > 1) 255f else outData[i] * 255f
                 }
+                // println("Minified float32...")
                 val intOut = TensorHelper.float32ToUInt8Clamped(outData)
-
+                // println("Created int")
                 val imgData = ImageData(intOut, width, height)
                 imgContext.putImageData(imgData, 0.0, 0.0)
+                // println("Put img")
                 targetCanvas.domNode.toDataURL()
-            }.onFailure { println("Failed: $it") }.getOrThrow()
+            }.onFailure { println("Failed: $it") }.getOrThrow()// .also { println("Donezo!") }
+
         }
     }
 }
